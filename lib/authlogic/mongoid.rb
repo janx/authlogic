@@ -14,9 +14,10 @@ module Authlogic
       base.send :include, Authlogic::ActsAsAuthentic::SessionMaintenance
       base.send :include, Authlogic::ActsAsAuthentic::SingleAccessToken
       base.send :include, Authlogic::ActsAsAuthentic::ValidationsScope
-
-      base.extend ClassMethods
       base.extend Authlogic::AuthenticatesMany::Base
+
+      base.send :include, InstanceMethods
+      base.extend ClassMethods
     end
 
     module ClassMethods
@@ -41,19 +42,32 @@ module Authlogic
         :utc
       end
 
-      #def find_by__id(*args)
-        #find *args
-      #end
-
-      # Change this to your preferred login field
-      #def find_by_username(username)
-        #where(:username => username).first
-      #end
-
       #def with_scope(query)
         #query = where(query) if query.is_a?(Hash)
         #yield query
       #end
+
+      def method_missing(name, *args)
+        if name =~ /^find_by_(.+)/ && self.fields.has_key?($1)
+          method = <<-METHOD
+            def #{name}(#{$1})
+              where(:#{$1} => #{$1}).first
+            end
+          METHOD
+          instance_eval method, __FILE__, __LINE__
+
+          send name, *args
+        else
+          super
+        end
+      end
+
+    end
+
+    module InstanceMethods
+      def readonly?
+        false
+      end
     end
 
   end
