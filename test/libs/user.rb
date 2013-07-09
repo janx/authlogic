@@ -2,8 +2,8 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :created_at, type: DateTime
-  field :updated_at, type: DateTime
+  field :created_at, type: Time
+  field :updated_at, type: Time
   field :lock_version, type: Integer, default: 0
   field :company_id, type: Integer
   field :login
@@ -17,8 +17,9 @@ class User
   field :last_name
   field :login_count, type: Integer, default: 0
   field :failed_login_count, type: Integer, default: 0
-  field :last_request_at, type: DateTime
-  field :current_login_at, type: DateTime
+  field :last_request_at, type: Time
+  field :last_login_at, type: Time
+  field :current_login_at, type: Time
   field :current_login_ip
   field :last_login_ip
   field :active, type: Boolean, default: true
