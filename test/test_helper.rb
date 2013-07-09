@@ -4,6 +4,8 @@ require "timecop"
 require "i18n"
 require 'mongoid'
 
+$: << File.expand_path('../../lib', __FILE__)
+
 I18n.load_path << File.dirname(__FILE__) + '/i18n/lol.yml'
 
 Mongoid.load! File.expand_path('../mongoid.yml', __FILE__), 'test'
@@ -36,58 +38,74 @@ class ActiveSupport::TestCase
     Project.delete_all
     Company.delete_all
     User.delete_all
+    Employee.delete_all
   end
 
   private
 
-    def insert_fixture(klass, attrs)
-      record = klass.new attrs
-      record.upsert
-      record
+    def find_or_create_fixture(klass, key, attrs)
+      exist = klass.where(key => attrs[key]).first
+      exist || klass.create!(attrs)
     end
 
     def projects(name)
       case name
       when :web_services
-        insert_fixture(Project, name: 'web services')
+        Project.where(name: 'web services').first_or_create!
       end
     end
 
     def companies(name)
       case name
       when :binary_logic
-        insert_fixture(Company, name: "Binary Logic")
+        Company.where(name: 'Binary Logic').first_or_create!
       when :logic_over_data
-        insert_fixture(Company, name: "Logic Over Data")
+        Company.where(name: 'Logic Over Data').first_or_create!
+      end
+    end
+
+    def employees(name)
+      salt = Authlogic::Random.hex_token
+
+      case name
+      when :drew
+        find_or_create_fixture(Employee, :email,
+          company: companies(:binary_logic),
+          email: 'dgainor@binarylogic.com',
+          password: "1234567",
+          password_confirmation: "1234567",
+          first_name: 'Drew',
+          last_name: 'Gainor')
+      when :jennifer
+        find_or_create_fixture(Employee, :email,
+          company: companies(:logic_over_data),
+          email: 'jjohnson@logicoverdata.com',
+          password: "1234567",
+          password_confirmation: "1234567",
+          first_name: 'Jennifer',
+          last_name: 'Johnson')
       end
     end
 
     def users(name)
-      salt = Authlogic::Random.hex_token
-
       case name
       when :ben
-        insert_fixture(User,
+        find_or_create_fixture(User, :login,
           company: companies(:binary_logic),
           projects: [projects(:web_services)],
           login: 'bjohnson',
-          password_salt: salt,
-          crypted_password: Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt),
-          persistence_token: '6cde0674657a8a313ce952df979de2830309aa4c11ca65805dd00bfdc65dbcc2f5e36718660a1d2e68c1a08c276d996763985d2f06fd3d076eb7bc4d97b1e317',
-          single_access_token: Authlogic::Random.friendly_token,
-          perishable_token: Authlogic::Random.friendly_token,
+          password: "benrocks",
+          password_confirmation: "benrocks",
           email: 'bjohnson@binarylogic.com',
           first_name: 'Ben',
           last_name: 'Johnson')
       when :zack
-        insert_fixture(User,
+        find_or_create_fixture(User, :login,
           company: companies(:logic_over_data),
           projects: [projects(:web_services)],
           login: 'zackham',
-          password_salt: salt,
-          crypted_password: Authlogic::CryptoProviders::Sha512.encrypt("zackrocks" + salt),
-          persistence_token: 'fd3c2d5ce09ab98e7547d21f1b3dcf9158a9a19b5d3022c0402f32ae197019fce3fdbc6614d7ee57d719bae53bb089e30edc9e5d6153e5bc3afca0ac1d320342',
-          single_access_token: Authlogic::Random.friendly_token,
+          password: "1234567",
+          password_confirmation: "1234567",
           email: 'zham@ziggityzack.com',
           first_name: 'Zack',
           last_name: 'Ham')
@@ -145,3 +163,6 @@ class ActiveSupport::TestCase
       controller.session["user_credentials"] = controller.session["user_credentials_id"] = nil
     end
 end
+
+#require 'pry'
+#binding.pry
