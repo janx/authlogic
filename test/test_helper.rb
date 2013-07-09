@@ -34,14 +34,36 @@ class ActiveSupport::TestCase
 
   private
 
+    def insert_fixture(klass, attrs)
+      record = klass.new attrs
+      record.upsert
+      record
+    end
+
+    def projects(name)
+      case name
+      when :web_services
+        insert_fixture(Project, name: 'web services')
+      end
+    end
+
+    def companies(name)
+      case name
+      when :binary_logic
+        insert_fixture(Company, name: "Binary Logic")
+      when :logic_over_data
+        insert_fixture(Company, name: "Logic Over Data")
+      end
+    end
+
     def users(name)
       salt = Authlogic::Random.hex_token
 
       case name
       when :ben
-        User.create!(
-          company: 'binary_logic',
-          projects: 'web_services',
+        insert_fixture(User,
+          company: companies(:binary_logic),
+          projects: [projects(:web_services)],
           login: 'bjohnson',
           password_salt: salt,
           crypted_password: Authlogic::CryptoProviders::Sha512.encrypt("benrocks" + salt),
@@ -50,11 +72,11 @@ class ActiveSupport::TestCase
           perishable_token: Authlogic::Random.friendly_token,
           email: 'bjohnson@binarylogic.com',
           first_name: 'Ben',
-          last_name: 'Johnson' )
+          last_name: 'Johnson')
       when :zack
-        User.create!(
-          company: 'logic_over_data',
-          projects: 'web_services',
+        insert_fixture(User,
+          company: companies(:logic_over_data),
+          projects: [projects(:web_services)],
           login: 'zackham',
           password_salt: salt,
           crypted_password: Authlogic::CryptoProviders::Sha512.encrypt("zackrocks" + salt),
@@ -62,7 +84,7 @@ class ActiveSupport::TestCase
           single_access_token: Authlogic::Random.friendly_token,
           email: 'zham@ziggityzack.com',
           first_name: 'Zack',
-          last_name: 'Ham' )
+          last_name: 'Ham')
       end
     end
 
