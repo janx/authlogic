@@ -16,6 +16,7 @@ module Authlogic
       base.send :include, Authlogic::ActsAsAuthentic::ValidationsScope
 
       base.extend ClassMethods
+      base.extend Authlogic::AuthenticatesMany::Base
     end
 
     module ClassMethods

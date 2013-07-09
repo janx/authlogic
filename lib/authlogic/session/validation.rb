@@ -13,7 +13,7 @@ module Authlogic
       #         errors.add(:base, "You must be awesome to log in") unless attempted_record.awesome?
       #       end
       #   end
-      class Errors < (defined?(::ActiveModel) ? ::ActiveModel::Errors : ::ActiveRecord::Errors)
+      class Errors < ::ActiveModel::Errors
         unless defined?(::ActiveModel)
           def [](key)
             value = super

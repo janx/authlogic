@@ -1,3 +1,5 @@
+require 'active_support/core_ext/class/attribute'
+
 module Authlogic
   module Session # :nodoc:
     # This is the base class Authlogic, where all modules are included. For information on functiionality see the various

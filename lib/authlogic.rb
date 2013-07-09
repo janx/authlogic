@@ -1,4 +1,4 @@
-require "active_record"
+require 'active_model'
 
 path = File.dirname(__FILE__) + "/authlogic/"
 
