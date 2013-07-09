@@ -97,17 +97,3 @@ module Authlogic
     end
   end
 end
-
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::Base
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::Email
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::LoggedInStatus
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::Login
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::MagicColumns
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::Password
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::PerishableToken
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::PersistenceToken
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::RestfulAuthentication
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::SessionMaintenance
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::SingleAccessToken
-::ActiveRecord::Base.send :include, Authlogic::ActsAsAuthentic::ValidationsScope
-

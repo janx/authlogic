@@ -2,21 +2,20 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
-  s.name        = "authlogic"
+  s.name        = "mongoid-authlogic"
   s.version     = "3.3.0"
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Ben Johnson"]
-  s.email       = ["bjohnson@binarylogic.com"]
-  s.homepage    = "http://github.com/binarylogic/authlogic"
+  s.authors     = ["Jan Xie", "Ben Johnson"]
+  s.email       = ["jan.h.xie@gmail.com", "bjohnson@binarylogic.com"]
+  s.homepage    = "http://github.com/janx/authlogic"
   s.summary     = %q{A clean, simple, and unobtrusive ruby authentication solution.}
   s.description = %q{A clean, simple, and unobtrusive ruby authentication solution.}
 
-  s.add_dependency 'activerecord', '>= 3.2'
+  s.add_dependency 'mongoid', '>= 3.0'
   s.add_dependency 'activesupport', '>= 3.2'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bcrypt-ruby'
   s.add_development_dependency 'scrypt'
-  s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'i18n'
 

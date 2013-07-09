@@ -55,7 +55,9 @@ path = File.dirname(__FILE__) + "/authlogic/"
  "session/timeout",
  "session/unauthorized_record",
  "session/validation",
- "session/base"
+ "session/base",
+
+ "mongoid"
 ].each do |library|
    require path + library
  end
