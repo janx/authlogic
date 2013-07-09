@@ -32,6 +32,12 @@ class ActiveSupport::TestCase
   #fixtures :all
   setup :activate_authlogic
 
+  setup do
+    Project.delete_all
+    Company.delete_all
+    User.delete_all
+  end
+
   private
 
     def insert_fixture(klass, attrs)
