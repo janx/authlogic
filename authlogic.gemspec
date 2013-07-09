@@ -13,11 +13,13 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'mongoid', '>= 3.0'
   s.add_dependency 'activesupport', '>= 3.2'
+  s.add_dependency 'activemodel', '>= 3.2'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bcrypt-ruby'
   s.add_development_dependency 'scrypt'
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'i18n'
+  s.add_development_dependency 'moped'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
