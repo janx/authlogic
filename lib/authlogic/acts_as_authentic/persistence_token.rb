@@ -36,7 +36,7 @@ module Authlogic
             records = nil
             i = 0
             begin
-              records = find(:all, :limit => 50, :offset => i)
+              records = self.limit(50).skip(i).to_a
               records.each { |record| record.forget! }
               i += 50
             end while !records.blank?
