@@ -9,22 +9,22 @@ module Authlogic
           attr_accessor :priority_record
         end
       end
-      
+
       # Setting priority record if it is passed. The only way it can be passed is through an array:
       #
       #   session.credentials = [real_user_object, priority_user_object]
       def credentials=(value)
         super
         values = value.is_a?(Array) ? value : [value]
-        self.priority_record = values[1] if values[1].class < ::ActiveRecord::Base
+        self.priority_record = values[1] if values[1].class < ::Mongoid::Document
       end
-      
+
       private
         def attempted_record=(value)
           value = priority_record if value == priority_record
           super
         end
-        
+
         def save_record(alternate_record = nil)
           r = alternate_record || record
           super if r != priority_record
