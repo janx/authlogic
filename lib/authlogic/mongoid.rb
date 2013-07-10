@@ -30,12 +30,7 @@ module Authlogic
       end
 
       def primary_key
-        # FIXME: Is this check good enough?
-        if caller.first.to_s =~ /(persist|session)/
-          :_id
-        else
-          @@primary_key
-        end
+        :_id
       end
 
       def default_timezone
