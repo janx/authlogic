@@ -64,20 +64,18 @@ module Authlogic
             return if token.blank?
             age = age.to_i
 
-            conditions_sql = "perishable_token = ?"
-            conditions_subs = [token]
+            relation = where(perishable_token: token)
 
             if column_names.include?("updated_at") && age > 0
-              conditions_sql += " and updated_at > ?"
-              conditions_subs << age.seconds.ago
+              relation = relation.gt(updated_at: age.seconds.ago)
             end
 
-            where(conditions_sql, *conditions_subs).first
+            relation.first
           end
 
           # This method will raise ActiveRecord::NotFound if no record is found.
           def find_using_perishable_token!(token, age = perishable_token_valid_for)
-            find_using_perishable_token(token, age) || raise(ActiveRecord::RecordNotFound)
+            find_using_perishable_token(token, age) || raise(::Mongoid::Errors::DocumentNotFound.new(self,{perishable_token: token}))
           end
         end
 
