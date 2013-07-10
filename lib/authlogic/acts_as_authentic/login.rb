@@ -112,16 +112,20 @@ module Authlogic
         end
 
         private
-          def find_with_case(field, value, sensitivity = true)
-            relation = if not sensitivity
-              connection.case_insensitive_comparison(arel_table, field.to_s, columns_hash[field.to_s], value)
-            else
-              value    = connection.case_sensitive_modifier(value) if value
-              relation = arel_table[field.to_s].eq(value)
-            end
 
-            where(relation).first
+        # Mongo doesn't support case insensitive search yet, use regex
+        # as a workaround.
+        #
+        # ref:
+        # http://stackoverflow.com/questions/1863399/mongodb-is-it-possible-to-make-a-case-insensitive-query
+        def find_with_case(field, value, sensitivity=true)
+          if not sensitivity
+            where(field => /^#{value}$/i).first
+          else
+            where(field => value).first
           end
+        end
+
       end
 
       # All methods relating to the login field
