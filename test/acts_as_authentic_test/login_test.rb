@@ -80,6 +80,8 @@ module ActsAsAuthenticTest
     end
 
     def test_validates_uniqueness_of_login_field
+      users(:ben)
+
       u = User.new
       u.login = "bjohnson"
       assert !u.valid?

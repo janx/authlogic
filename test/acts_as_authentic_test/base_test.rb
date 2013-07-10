@@ -16,7 +16,8 @@ module ActsAsAuthenticTest
     end
     
     def test_acts_as_authentic_with_no_table
-      klass = Class.new(ActiveRecord::Base)
+      klass = Class.new
+      klass.send :include, Authlogic::Mongoid
       assert_nothing_raised do
         klass.acts_as_authentic
       end

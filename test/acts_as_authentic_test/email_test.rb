@@ -129,6 +129,8 @@ module ActsAsAuthenticTest
     end
 
     def test_validates_uniqueness_of_email_field
+      exist = users(:ben)
+
       u = User.new
       u.email = "bjohnson@binarylogic.com"
       assert !u.valid?
