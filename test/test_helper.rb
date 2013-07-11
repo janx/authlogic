@@ -65,7 +65,7 @@ class ActiveSupport::TestCase
     end
 
     def employees(name)
-      salt = Authlogic::Random.hex_token
+      Employee.maintain_sessions = false
 
       case name
       when :drew
@@ -85,9 +85,13 @@ class ActiveSupport::TestCase
           first_name: 'Jennifer',
           last_name: 'Johnson')
       end
+    ensure
+      Employee.maintain_sessions = true
     end
 
     def users(name)
+      User.maintain_sessions = false
+
       case name
       when :ben
         find_or_create_fixture(User, :login,
@@ -104,12 +108,14 @@ class ActiveSupport::TestCase
           company: companies(:logic_over_data),
           projects: [projects(:web_services)],
           login: 'zackham',
-          password: "1234567",
-          password_confirmation: "1234567",
+          password: "zackrocks",
+          password_confirmation: "zackrocks",
           email: 'zham@ziggityzack.com',
           first_name: 'Zack',
           last_name: 'Ham')
       end
+    ensure
+      User.maintain_sessions = true
     end
 
     def password_for(user)
@@ -156,11 +162,11 @@ class ActiveSupport::TestCase
 
     def set_session_for(user, id = nil)
       controller.session["user_credentials"] = user.persistence_token
-      controller.session["user_credentials_id"] = user.id
+      controller.session["user_credentials__id"] = user.id
     end
 
     def unset_session
-      controller.session["user_credentials"] = controller.session["user_credentials_id"] = nil
+      controller.session["user_credentials"] = controller.session["user_credentials__id"] = nil
     end
 end
 
