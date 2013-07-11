@@ -91,7 +91,15 @@ module Authlogic
           end
 
           def search_for_record(*args)
-            klass.send(:with_scope, :find => (scope[:find_options] || {})) do
+            s = case scope[:find_options]
+                when Hash
+                  klass.where(scope[:find_options])
+                when NilClass
+                  klass.where({})
+                else
+                  scope[:find_options]
+                end
+            klass.with_scope(s) do
               klass.send(*args)
             end
           end
