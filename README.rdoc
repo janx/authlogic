@@ -1,4 +1,18 @@
-= Authlogic
+= Authlogic Fork for Mongoid
+
+This is a fork of authlogic to make it work with mongoid. To use, add this line to your Gemfile:
+
+```ruby
+  gem 'mongoid-authlogic', git: 'git@github.com:janx/authlogic.git', require: 'authlogic'
+```
+
+and this in your user model before any authlogic stuff (e.g. `acts_as_authentic`):
+
+```ruby
+  include Authlogic::Mongoid
+```
+
+== Original README
 
 ** Please note the latest version is compatible with rails 3.2 only. Please see the rails2 branch for Rails 2 compatibility.
 
