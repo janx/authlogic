@@ -2,15 +2,11 @@
 
 This is a fork of authlogic to make it work with mongoid. To use, add this line to your Gemfile:
 
-```ruby
   gem 'mongoid-authlogic', git: 'git@github.com:janx/authlogic.git', require: 'authlogic'
-```
 
 and this in your user model before any authlogic stuff (e.g. `acts_as_authentic`):
 
-```ruby
   include Authlogic::Mongoid
-```
 
 == Original README
 
